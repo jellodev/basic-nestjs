@@ -1,11 +1,10 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import config from './common/config/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { UserModule } from './modules/user/user.module';
-import { LoggerMiddleware } from './common/middleware/Logger.middleware';
-import { ComplexityPlugin } from './common/plugin/complecity.plugin';
+import { ComplexityPlugin, LoggerPlugin } from './common/plugin';
 
 @Module({
   imports: [
@@ -18,10 +17,6 @@ import { ComplexityPlugin } from './common/plugin/complecity.plugin';
     }),
   ],
   controllers: [],
-  providers: [ComplexityPlugin],
+  providers: [ComplexityPlugin, LoggerPlugin],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): any {
-    consumer.apply(LoggerMiddleware).forRoutes('/graphql');
-  }
-}
+export class AppModule {}
